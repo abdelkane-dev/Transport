@@ -1,4 +1,4 @@
-# 🚌 Transport Réservation – Backend Django Complet
+# Transport Réservation – Backend Django Complet
 
 > Projet académique – Application de réservation de billets de bus  
 > **Lead Développeur Backend :** Personne 1 | Stack : Django 5.x + DRF + SQLite
@@ -502,6 +502,3 @@ La validation métier dans `clean()` s'assure que les règles sont vérifiées *
 ### Pourquoi CBV (Class-Based Views) ?
 Les CBV permettent de réutiliser le comportement commun via `LoginRequiredMixin`, `UserPassesTestMixin`, etc. Elles sont plus maintenables pour des projets de taille moyenne et suivent les conventions Django.
 
----
-
-*README généré par Lead Backend – Projet Transport Réservation – 2024*

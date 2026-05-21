@@ -1,0 +1,113 @@
+{% extends 'base.html' %}
+{% block title %}{{ trajet.ville_depart }} → {{ trajet.ville_arrivee }} – TransportBus{% endblock %}
+
+{% block content %}
+<a href="{% url 'trajets:liste' %}" class="btn btn-outline-secondary btn-sm mb-3">
+    <i class="bi bi-arrow-left me-1"></i>Retour aux trajets
+</a>
+
+<div class="row g-4">
+    <!-- Détail du trajet -->
+    <div class="col-md-7">
+        <div class="card border-0 shadow-sm">
+            <div class="card-header bg-primary text-white">
+                <h4 class="mb-0">
+                    <i class="bi bi-map-fill me-2"></i>
+                    {{ trajet.ville_depart }} → {{ trajet.ville_arrivee }}
+                </h4>
+            </div>
+            <div class="card-body p-4">
+                <div class="row g-3">
+                    <div class="col-sm-6">
+                        <div class="p-3 bg-light rounded">
+                            <div class="text-muted small">Date de départ</div>
+                            <div class="fw-bold fs-5">{{ trajet.date_depart|date:"d/m/Y" }}</div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="p-3 bg-light rounded">
+                            <div class="text-muted small">Heure de départ</div>
+                            <div class="fw-bold fs-5">{{ trajet.heure_depart|time:"H:i" }}</div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="p-3 bg-light rounded">
+                            <div class="text-muted small">Prix par place</div>
+                            <div class="fw-bold fs-4 text-success">{{ trajet.prix|floatformat:0 }} FCFA</div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="p-3 bg-light rounded">
+                            <div class="text-muted small">Bus assigné</div>
+                            <div class="fw-bold">{{ trajet.bus.immatriculation }}</div>
+                            <small class="text-muted">{{ trajet.bus.nombre_places }} places au total</small>
+                        </div>
+                    </div>
+                </div>
+                <!-- Taux de remplissage -->
+                <div class="mt-3">
+                    <div class="d-flex justify-content-between mb-1">
+                        <small class="fw-semibold">Taux de remplissage</small>
+                        <small>{{ places_reservees }}/{{ trajet.bus.nombre_places }} places</small>
+                    </div>
+                    <div class="progress" style="height:10px;">
+                        <div class="progress-bar {% if taux_remplissage >= 90 %}bg-danger{% elif taux_remplissage >= 70 %}bg-warning{% else %}bg-success{% endif %}"
+                             style="width:{{ taux_remplissage }}%"></div>
+                    </div>
+                    <small class="text-muted">{{ places_disponibles }} place(s) disponible(s)</small>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bouton réservation -->
+    <div class="col-md-5">
+        <div class="card border-0 shadow-sm">
+            <div class="card-body p-4 text-center">
+                <h5 class="mb-3">Réserver votre place</h5>
+                {% if est_passe %}
+                <div class="alert alert-secondary">
+                    <i class="bi bi-calendar-x me-2"></i>Ce trajet est passé.
+                </div>
+                {% elif est_complet %}
+                <div class="alert alert-danger">
+                    <i class="bi bi-x-circle me-2"></i>Ce trajet est complet.
+                </div>
+                {% elif deja_reserve %}
+                <div class="alert alert-info">
+                    <i class="bi bi-check-circle me-2"></i>Vous avez déjà une réservation active sur ce trajet.
+                </div>
+                <a href="{% url 'reservations:dashboard' %}" class="btn btn-outline-primary">
+                    Voir mes réservations
+                </a>
+                {% elif user.is_authenticated %}
+                <div class="fs-2 text-success fw-bold mb-2">{{ trajet.prix|floatformat:0 }} FCFA</div>
+                <p class="text-muted">{{ places_disponibles }} place(s) disponible(s)</p>
+                <a href="{% url 'reservations:creer' trajet.pk %}" class="btn btn-success btn-lg w-100">
+                    <i class="bi bi-ticket-fill me-2"></i>Réserver maintenant
+                </a>
+                {% else %}
+                <p class="text-muted">Connectez-vous pour réserver</p>
+                <a href="{% url 'accounts:connexion' %}?next={% url 'trajets:detail' trajet.pk %}"
+                   class="btn btn-primary btn-lg w-100">
+                    <i class="bi bi-box-arrow-in-right me-2"></i>Se connecter
+                </a>
+                <a href="{% url 'accounts:inscription' %}" class="btn btn-outline-primary mt-2 w-100">
+                    Créer un compte
+                </a>
+                {% endif %}
+                {% if user.is_staff %}
+                <div class="mt-3 pt-3 border-top">
+                    <a href="{% url 'trajets:modifier' trajet.pk %}" class="btn btn-sm btn-outline-warning me-1">
+                        <i class="bi bi-pencil me-1"></i>Modifier
+                    </a>
+                    <a href="{% url 'trajets:supprimer' trajet.pk %}" class="btn btn-sm btn-outline-danger">
+                        <i class="bi bi-trash me-1"></i>Supprimer
+                    </a>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

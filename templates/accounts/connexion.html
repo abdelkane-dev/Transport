@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% block title %}Connexion – TransportBus{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6 col-lg-5">
+        <div class="card shadow-sm border-0">
+            <div class="card-header bg-primary text-white py-3">
+                <h4 class="mb-0 text-center">
+                    <i class="bi bi-box-arrow-in-right me-2"></i>Connexion
+                </h4>
+            </div>
+            <div class="card-body p-4">
+                <form method="post" novalidate>
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">{{ form.username.label }}</label>
+                        {{ form.username }}
+                        {% if form.username.errors %}
+                        <div class="text-danger small mt-1">{{ form.username.errors.0 }}</div>
+                        {% endif %}
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">{{ form.password.label }}</label>
+                        {{ form.password }}
+                        {% if form.password.errors %}
+                        <div class="text-danger small mt-1">{{ form.password.errors.0 }}</div>
+                        {% endif %}
+                    </div>
+                    {% if form.non_field_errors %}
+                    <div class="alert alert-danger">
+                        <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                        {{ form.non_field_errors.0 }}
+                    </div>
+                    {% endif %}
+                    <div class="d-grid mt-4">
+                        <button type="submit" class="btn btn-primary btn-lg">
+                            <i class="bi bi-box-arrow-in-right me-2"></i>Se connecter
+                        </button>
+                    </div>
+                </form>
+            </div>
+            <div class="card-footer text-center py-3 bg-light">
+                <span class="text-muted">Pas encore de compte ?</span>
+                <a href="{% url 'accounts:inscription' %}" class="fw-semibold ms-1">S'inscrire</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

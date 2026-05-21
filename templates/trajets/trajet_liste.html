@@ -1,0 +1,130 @@
+{% extends 'base.html' %}
+{% block title %}Trajets disponibles – TransportBus{% endblock %}
+
+{% block content %}
+<h2 class="fw-bold mb-4"><i class="bi bi-map-fill me-2 text-primary"></i>Trajets disponibles</h2>
+
+<!-- Formulaire de recherche -->
+<div class="card border-0 shadow-sm mb-4">
+    <div class="card-body">
+        <form method="get" class="row g-3">
+            <div class="col-md-4">
+                <label class="form-label small fw-semibold">Ville de départ</label>
+                <input type="text" name="ville_depart" class="form-control"
+                       value="{{ request.GET.ville_depart }}" placeholder="Ex: Dakar">
+            </div>
+            <div class="col-md-4">
+                <label class="form-label small fw-semibold">Ville d'arrivée</label>
+                <input type="text" name="ville_arrivee" class="form-control"
+                       value="{{ request.GET.ville_arrivee }}" placeholder="Ex: Thiès">
+            </div>
+            <div class="col-md-3">
+                <label class="form-label small fw-semibold">Date</label>
+                <input type="date" name="date_depart" class="form-control"
+                       value="{{ request.GET.date_depart }}">
+            </div>
+            <div class="col-md-1 d-flex align-items-end">
+                <button type="submit" class="btn btn-primary w-100">
+                    <i class="bi bi-search"></i>
+                </button>
+            </div>
+        </form>
+        {% if request.GET %}
+        <div class="mt-2">
+            <a href="{% url 'trajets:liste' %}" class="btn btn-outline-secondary btn-sm">
+                <i class="bi bi-x-circle me-1"></i>Effacer la recherche
+            </a>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+<!-- Liste des trajets -->
+{% if trajets %}
+<div class="row g-3">
+    {% for trajet in trajets %}
+    <div class="col-12">
+        <div class="card border-0 shadow-sm hover-lift">
+            <div class="card-body">
+                <div class="row align-items-center">
+                    <!-- Route -->
+                    <div class="col-md-4">
+                        <div class="d-flex align-items-center">
+                            <div class="text-end me-2">
+                                <div class="fw-bold fs-5 text-primary">{{ trajet.ville_depart }}</div>
+                                <small class="text-muted">Départ</small>
+                            </div>
+                            <div class="px-3 text-muted">
+                                <i class="bi bi-arrow-right-circle-fill fs-4 text-primary"></i>
+                            </div>
+                            <div>
+                                <div class="fw-bold fs-5 text-success">{{ trajet.ville_arrivee }}</div>
+                                <small class="text-muted">Arrivée</small>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Date et heure -->
+                    <div class="col-md-2">
+                        <div class="text-center">
+                            <i class="bi bi-calendar3 text-muted me-1"></i>
+                            <span class="fw-semibold">{{ trajet.date_depart|date:"d/m/Y" }}</span>
+                            <br>
+                            <small class="text-muted">
+                                <i class="bi bi-clock me-1"></i>{{ trajet.heure_depart|time:"H:i" }}
+                            </small>
+                        </div>
+                    </div>
+                    <!-- Prix -->
+                    <div class="col-md-2 text-center">
+                        <div class="fw-bold fs-4 text-success">{{ trajet.prix|floatformat:0 }}</div>
+                        <small class="text-muted">FCFA / place</small>
+                    </div>
+                    <!-- Disponibilité -->
+                    <div class="col-md-2 text-center">
+                        {% with dispo=trajet.get_places_disponibles %}
+                        {% if dispo <= 0 %}
+                        <span class="badge bg-danger fs-6">Complet</span>
+                        {% elif dispo <= 5 %}
+                        <span class="badge bg-warning text-dark fs-6">{{ dispo }} places</span>
+                        {% else %}
+                        <span class="badge bg-success fs-6">{{ dispo }} places</span>
+                        {% endif %}
+                        {% endwith %}
+                        <br>
+                        <small class="text-muted">Bus : {{ trajet.bus.immatriculation }}</small>
+                    </div>
+                    <!-- Action -->
+                    <div class="col-md-2 text-end">
+                        <a href="{% url 'trajets:detail' trajet.pk %}" class="btn btn-primary">
+                            <i class="bi bi-ticket-fill me-1"></i>Réserver
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+<!-- Pagination -->
+{% if is_paginated %}
+<nav class="mt-4">
+    <ul class="pagination justify-content-center">
+        {% if page_obj.has_previous %}
+        <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">Précédent</a></li>
+        {% endif %}
+        <li class="page-item active"><span class="page-link">{{ page_obj.number }} / {{ page_obj.paginator.num_pages }}</span></li>
+        {% if page_obj.has_next %}
+        <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">Suivant</a></li>
+        {% endif %}
+    </ul>
+</nav>
+{% endif %}
+{% else %}
+<div class="text-center py-5">
+    <i class="bi bi-map text-muted" style="font-size:5rem;"></i>
+    <h4 class="text-muted mt-3">Aucun trajet trouvé</h4>
+    <p class="text-muted">Essayez avec d'autres critères de recherche.</p>
+    <a href="{% url 'trajets:liste' %}" class="btn btn-primary">Voir tous les trajets</a>
+</div>
+{% endif %}
+{% endblock %}

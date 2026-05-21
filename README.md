@@ -1,7 +1,7 @@
 # Transport Réservation – Backend Django Complet
 
 > Projet académique – Application de réservation de billets de bus  
-> **Lead Développeur Backend :** Personne 1 | Stack : Django 5.x + DRF + SQLite
+> **Lead Développeur Backend :** Abdoul_Karim_Traoré | Stack : Django 5.x + DRF + SQLite
 
 ---
 
@@ -29,11 +29,11 @@
 
 | Rôle | Responsabilités |
 |------|----------------|
-| **Personne 1 – Lead Backend** | Architecture Django, modèles, API REST, admin, logique métier, déploiement |
-| **Personne 2 – Frontend** | Templates HTML/CSS, intégration Bootstrap, UX/UI, formulaires |
-| **Personne 3 – Tests & DevOps** | Tests unitaires, fixtures, CI/CD, documentation technique |
+| **Abdou_Karim8Traoré – Lead Backend** | Architecture Django, modèles, API REST, admin, logique métier, déploiement |
+| **Oumou_Sarr_Keita – Frontend** | Templates HTML/CSS, intégration Bootstrap, UX/UI, formulaires |
+| **Adama_Bengaly – Tests & DevOps** | Tests unitaires, fixtures, CI/CD, documentation technique |
 
-> Ce dépôt contient **le travail de Personne 1 (Lead Backend)** dans son intégralité.
+> Ce dépôt contient **le travail de Abdoul_Karim_Traoré (Lead Backend)** dans son intégralité.
 
 ---
 

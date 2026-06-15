@@ -1,123 +1,146 @@
 {% extends 'base.html' %}
+
 {% block title %}Mes Réservations – TransportBus{% endblock %}
 
 {% block content %}
-<h2 class="fw-bold mb-4">
-    <i class="bi bi-ticket-fill me-2 text-primary"></i>
-    Mes Réservations – {{ user.get_full_name }}
-</h2>
 
-<!-- Statistiques -->
-<div class="row g-3 mb-4">
-    <div class="col-md-4">
-        <div class="card border-0 shadow-sm text-center">
-            <div class="card-body py-3">
-                <div class="fs-2 fw-bold text-primary">{{ total_reservations }}</div>
-                <div class="text-muted small">Total réservations</div>
+<section class="tickets-page">
+
+    <div class="tickets-hero mb-4">
+        <div>
+            <p class="profile-kicker">Mes voyages</p>
+            <h1>Bonjour {{ user.prenom|default:user.username }} 👋</h1>
+            <p>Vos billets, réservations et prochains trajets au même endroit.</p>
+        </div>
+
+        <a href="{% url 'trajets:liste' %}" class="btn btn-light">
+            <i class="bi bi-search me-2"></i>Nouveau trajet
+        </a>
+    </div>
+
+    <div class="row g-3 mb-4">
+        <div class="col-md-4">
+            <div class="dash-stat dash-green">
+                <div>
+                    <h2>{{ total_reservations }}</h2>
+                    <p>Total réservations</p>
+                </div>
+                <i class="bi bi-ticket-perforated-fill"></i>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="dash-stat dash-blue">
+                <div>
+                    <h2>{{ reservations_actives }}</h2>
+                    <p>Réservations actives</p>
+                </div>
+                <i class="bi bi-check-circle-fill"></i>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="dash-stat dash-red">
+                <div>
+                    <h2>{{ reservations_annulees }}</h2>
+                    <p>Annulées</p>
+                </div>
+                <i class="bi bi-x-circle-fill"></i>
             </div>
         </div>
     </div>
-    <div class="col-md-4">
-        <div class="card border-0 shadow-sm text-center">
-            <div class="card-body py-3">
-                <div class="fs-2 fw-bold text-success">{{ reservations_actives }}</div>
-                <div class="text-muted small">Actives (En attente / Confirmées)</div>
-            </div>
-        </div>
-    </div>
-    <div class="col-md-4">
-        <div class="card border-0 shadow-sm text-center">
-            <div class="card-body py-3">
-                <div class="fs-2 fw-bold text-secondary">{{ reservations_annulees }}</div>
-                <div class="text-muted small">Annulées</div>
-            </div>
-        </div>
-    </div>
-</div>
 
-<!-- Lien vers trajets -->
-<div class="d-flex justify-content-end mb-3">
-    <a href="{% url 'trajets:liste' %}" class="btn btn-primary">
-        <i class="bi bi-search me-2"></i>Rechercher un trajet
-    </a>
-</div>
+    {% if reservations %}
 
-<!-- Liste des réservations -->
-{% if reservations %}
-<div class="card border-0 shadow-sm">
-    <div class="table-responsive">
-        <table class="table table-hover mb-0 align-middle">
-            <thead class="table-primary">
-                <tr>
-                    <th>#</th>
-                    <th>Trajet</th>
-                    <th>Date départ</th>
-                    <th>Places</th>
-                    <th>Prix total</th>
-                    <th>Statut</th>
-                    <th>Réservé le</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for resa in reservations %}
-                <tr>
-                    <td class="text-muted small">#{{ resa.id }}</td>
-                    <td>
-                        <strong>{{ resa.trajet.ville_depart }} → {{ resa.trajet.ville_arrivee }}</strong>
-                        <br>
-                        <small class="text-muted">{{ resa.trajet.heure_depart|time:"H:i" }}</small>
-                    </td>
-                    <td>{{ resa.trajet.date_depart|date:"d/m/Y" }}</td>
-                    <td>{{ resa.nombre_places }} place(s)</td>
-                    <td class="fw-semibold text-success">{{ resa.get_prix_total|floatformat:0 }} FCFA</td>
-                    <td>
-                        {% if resa.statut == 'EN_ATTENTE' %}
-                        <span class="badge bg-warning text-dark">⏳ En attente</span>
-                        {% elif resa.statut == 'CONFIRMEE' %}
-                        <span class="badge bg-success">✅ Confirmée</span>
-                        {% else %}
-                        <span class="badge bg-secondary">❌ Annulée</span>
-                        {% endif %}
-                    </td>
-                    <td class="text-muted small">{{ resa.date_reservation|date:"d/m/Y H:i" }}</td>
-                    <td>
-                        <a href="{% url 'reservations:detail' resa.pk %}" class="btn btn-sm btn-outline-info me-1">
-                            <i class="bi bi-eye"></i>
+    <div class="row g-4">
+        {% for resa in reservations %}
+        <div class="col-lg-6">
+            <div class="travel-ticket">
+
+                <div class="ticket-head">
+                    <span class="ticket-id">Réservation #{{ resa.id }}</span>
+
+                    {% if resa.statut == 'EN_ATTENTE' %}
+                        <span class="ticket-status warning">En attente</span>
+                    {% elif resa.statut == 'CONFIRMEE' %}
+                        <span class="ticket-status success">Confirmée</span>
+                    {% else %}
+                        <span class="ticket-status muted">Annulée</span>
+                    {% endif %}
+                </div>
+
+                <div class="ticket-route-main">
+                    <div>
+                        <small>Départ</small>
+                        <h3>{{ resa.trajet.ville_depart }}</h3>
+                    </div>
+
+                    <div class="ticket-road">
+                        <i class="bi bi-bus-front-fill"></i>
+                    </div>
+
+                    <div class="text-end">
+                        <small>Arrivée</small>
+                        <h3>{{ resa.trajet.ville_arrivee }}</h3>
+                    </div>
+                </div>
+
+                <div class="ticket-details-grid">
+                    <div>
+                        <i class="bi bi-calendar3"></i>
+                        <span>{{ resa.trajet.date_depart|date:"d/m/Y" }}</span>
+                    </div>
+
+                    <div>
+                        <i class="bi bi-clock"></i>
+                        <span>{{ resa.trajet.heure_depart|time:"H:i" }}</span>
+                    </div>
+
+                    <div>
+                        <i class="bi bi-people"></i>
+                        <span>{{ resa.nombre_places }} place(s)</span>
+                    </div>
+                </div>
+
+                <div class="ticket-footer">
+                    <div>
+                        <small>Total</small>
+                        <strong>{{ resa.get_prix_total|floatformat:0 }} FCFA</strong>
+                    </div>
+
+                    <div class="d-flex gap-2 flex-wrap">
+                        <a href="{% url 'reservations:detail' resa.pk %}" class="btn btn-sm btn-success">
+                            Voir ticket
                         </a>
+
                         {% if resa.peut_etre_annulee %}
-                        <a href="{% url 'reservations:annuler' resa.pk %}" class="btn btn-sm btn-outline-danger">
-                            <i class="bi bi-x-circle"></i>
+                        <a href="{% url 'reservations:annuler' resa.pk %}"
+                           class="btn btn-sm btn-outline-danger"
+                           onclick="return confirm('Voulez-vous vraiment annuler cette réservation ?');">
+                            Annuler
                         </a>
                         {% endif %}
-                    </td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        {% endfor %}
     </div>
-</div>
-<!-- Pagination -->
-{% if is_paginated %}
-<nav class="mt-4">
-    <ul class="pagination justify-content-center">
-        {% if page_obj.has_previous %}
-        <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">Précédent</a></li>
-        {% endif %}
-        <li class="page-item active"><span class="page-link">{{ page_obj.number }}/{{ page_obj.paginator.num_pages }}</span></li>
-        {% if page_obj.has_next %}
-        <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">Suivant</a></li>
-        {% endif %}
-    </ul>
-</nav>
-{% endif %}
-{% else %}
-<div class="text-center py-5">
-    <i class="bi bi-ticket text-muted" style="font-size:5rem;"></i>
-    <h4 class="text-muted mt-3">Vous n'avez pas encore de réservation</h4>
-    <a href="{% url 'trajets:liste' %}" class="btn btn-primary mt-2">
-        <i class="bi bi-map me-2"></i>Voir les trajets disponibles
-    </a>
-</div>
-{% endif %}
+
+    {% else %}
+
+    <div class="empty-state">
+        <i class="bi bi-ticket"></i>
+        <h3>Vous n'avez pas encore de réservation</h3>
+        <p>Commencez par rechercher un trajet disponible.</p>
+        <a href="{% url 'trajets:liste' %}" class="btn btn-success">
+            Voir les trajets disponibles
+        </a>
+    </div>
+
+    {% endif %}
+
+</section>
+
 {% endblock %}

@@ -1,84 +1,148 @@
 {% extends 'base.html' %}
+
 {% block title %}Administration – Toutes les réservations{% endblock %}
 
 {% block content %}
-<div class="d-flex justify-content-between align-items-center mb-4">
-    <h2 class="fw-bold"><i class="bi bi-ticket-perforated-fill me-2 text-primary"></i>Toutes les réservations</h2>
-    <span class="badge bg-primary fs-6">Total : {{ total }}</span>
-</div>
 
-<!-- Filtre par statut -->
-<div class="card border-0 shadow-sm mb-4">
-    <div class="card-body">
+<section class="admin-res-page">
+
+    <div class="admin-res-header">
+        <div>
+            <p class="profile-kicker">Administration</p>
+            <h1>Toutes les réservations</h1>
+            <p>Suivez, filtrez, confirmez et annulez les réservations clients.</p>
+        </div>
+
+        <div class="admin-total-badge">
+            <span>{{ total }}</span>
+            <small>Total</small>
+        </div>
+    </div>
+
+    <div class="admin-res-filter">
         <form method="get" class="d-flex gap-2 flex-wrap align-items-end">
             <div>
-                <label class="form-label small fw-semibold">Filtrer par statut</label>
-                <select name="statut" class="form-select form-select-sm" style="min-width:160px;">
+                <label class="form-label">Filtrer par statut</label>
+                <select name="statut" class="form-select">
                     <option value="">Toutes</option>
-                    <option value="EN_ATTENTE" {% if statut_filtre == 'EN_ATTENTE' %}selected{% endif %}>⏳ En attente</option>
-                    <option value="CONFIRMEE" {% if statut_filtre == 'CONFIRMEE' %}selected{% endif %}>✅ Confirmée</option>
-                    <option value="ANNULEE" {% if statut_filtre == 'ANNULEE' %}selected{% endif %}>❌ Annulée</option>
+                    <option value="EN_ATTENTE" {% if statut_filtre == 'EN_ATTENTE' %}selected{% endif %}>En attente</option>
+                    <option value="CONFIRMEE" {% if statut_filtre == 'CONFIRMEE' %}selected{% endif %}>Confirmée</option>
+                    <option value="ANNULEE" {% if statut_filtre == 'ANNULEE' %}selected{% endif %}>Annulée</option>
                 </select>
             </div>
-            <button type="submit" class="btn btn-outline-primary btn-sm">Filtrer</button>
-            <a href="{% url 'reservations:admin' %}" class="btn btn-outline-secondary btn-sm">Réinitialiser</a>
+
+            <button type="submit" class="btn btn-success">
+                <i class="bi bi-funnel me-1"></i>
+                Filtrer
+            </button>
+
+            <a href="{% url 'reservations:admin' %}" class="btn btn-outline-secondary">
+                Réinitialiser
+            </a>
         </form>
     </div>
-</div>
 
-<div class="card border-0 shadow-sm">
-    <div class="table-responsive">
-        <table class="table table-hover mb-0 align-middle">
-            <thead class="table-primary">
-                <tr>
-                    <th>#</th><th>Client</th><th>Trajet</th>
-                    <th>Date départ</th><th>Places</th>
-                    <th>Prix total</th><th>Statut</th>
-                    <th>Réservé le</th><th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for resa in reservations %}
-                <tr>
-                    <td class="text-muted small">#{{ resa.id }}</td>
-                    <td>
-                        <span class="fw-semibold">{{ resa.client.get_full_name }}</span>
-                        <br><small class="text-muted">{{ resa.client.email }}</small>
-                    </td>
-                    <td>{{ resa.trajet.ville_depart }} → {{ resa.trajet.ville_arrivee }}</td>
-                    <td>{{ resa.trajet.date_depart|date:"d/m/Y" }}</td>
-                    <td>{{ resa.nombre_places }}</td>
-                    <td class="fw-semibold">{{ resa.get_prix_total|floatformat:0 }} FCFA</td>
-                    <td>
-                        {% if resa.statut == 'EN_ATTENTE' %}<span class="badge bg-warning text-dark">⏳ En attente</span>
-                        {% elif resa.statut == 'CONFIRMEE' %}<span class="badge bg-success">✅ Confirmée</span>
-                        {% else %}<span class="badge bg-secondary">❌ Annulée</span>{% endif %}
-                    </td>
-                    <td class="text-muted small">{{ resa.date_reservation|date:"d/m/Y H:i" }}</td>
-                    <td>
-                        <a href="{% url 'reservations:detail' resa.pk %}" class="btn btn-sm btn-outline-info me-1">
-                            <i class="bi bi-eye"></i>
-                        </a>
+    {% if reservations %}
+        <div class="admin-res-grid">
+            {% for resa in reservations %}
+                <div class="admin-res-card">
+
+                    <div class="admin-res-top">
+                        <span class="reservation-id">#{{ resa.id }}</span>
+
                         {% if resa.statut == 'EN_ATTENTE' %}
-                        <form method="post" action="{% url 'reservations:confirmer' resa.pk %}" class="d-inline">
-                            {% csrf_token %}
-                            <button type="submit" class="btn btn-sm btn-success me-1" title="Confirmer">
-                                <i class="bi bi-check"></i>
-                            </button>
-                        </form>
+                            <span class="ticket-status warning">En attente</span>
+                        {% elif resa.statut == 'CONFIRMEE' %}
+                            <span class="ticket-status success">Confirmée</span>
+                        {% else %}
+                            <span class="ticket-status muted">Annulée</span>
                         {% endif %}
-                        {% if resa.peut_etre_annulee %}
-                        <a href="{% url 'reservations:annuler' resa.pk %}" class="btn btn-sm btn-outline-danger" title="Annuler">
-                            <i class="bi bi-x"></i>
-                        </a>
-                        {% endif %}
-                    </td>
-                </tr>
-                {% empty %}
-                <tr><td colspan="9" class="text-center text-muted py-4">Aucune réservation trouvée.</td></tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    </div>
-</div>
+                    </div>
+
+                    <div class="admin-client">
+                        <div class="admin-client-avatar">
+                            {{ resa.client.prenom|default:resa.client.username|first|upper }}
+                        </div>
+
+                        <div>
+                            <h4>{{ resa.client.get_full_name|default:resa.client.username }}</h4>
+                            <p>{{ resa.client.email }}</p>
+                        </div>
+                    </div>
+
+                    <div class="admin-res-route">
+                        <div>
+                            <small>Départ</small>
+                            <strong>{{ resa.trajet.ville_depart }}</strong>
+                        </div>
+
+                        <div class="admin-route-line">
+                            <i class="bi bi-bus-front-fill"></i>
+                        </div>
+
+                        <div class="text-end">
+                            <small>Arrivée</small>
+                            <strong>{{ resa.trajet.ville_arrivee }}</strong>
+                        </div>
+                    </div>
+
+                    <div class="admin-res-info">
+                        <div>
+                            <i class="bi bi-calendar3"></i>
+                            <span>{{ resa.trajet.date_depart|date:"d/m/Y" }}</span>
+                        </div>
+
+                        <div>
+                            <i class="bi bi-people"></i>
+                            <span>{{ resa.nombre_places }} place(s)</span>
+                        </div>
+
+                        <div>
+                            <i class="bi bi-cash-stack"></i>
+                            <span>{{ resa.get_prix_total|floatformat:0 }} FCFA</span>
+                        </div>
+                    </div>
+
+                    <div class="admin-res-bottom">
+                        <small>
+                            Réservé le {{ resa.date_reservation|date:"d/m/Y H:i" }}
+                        </small>
+
+                        <div class="admin-res-actions">
+                            <a href="{% url 'reservations:detail' resa.pk %}" class="btn btn-sm btn-outline-info">
+                                <i class="bi bi-eye"></i>
+                            </a>
+
+                            {% if resa.statut == 'EN_ATTENTE' %}
+                                <form method="post" action="{% url 'reservations:confirmer' resa.pk %}">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-sm btn-success" title="Confirmer">
+                                        <i class="bi bi-check"></i>
+                                    </button>
+                                </form>
+                            {% endif %}
+
+                            {% if resa.peut_etre_annulee %}
+                                <a href="{% url 'reservations:annuler' resa.pk %}"
+                                   class="btn btn-sm btn-outline-danger"
+                                   onclick="return confirm('Voulez-vous vraiment annuler cette réservation ?');">
+                                    <i class="bi bi-x"></i>
+                                </a>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="empty-state">
+            <i class="bi bi-ticket"></i>
+            <h3>Aucune réservation trouvée</h3>
+            <p>Aucune réservation ne correspond au filtre choisi.</p>
+        </div>
+    {% endif %}
+
+</section>
+
 {% endblock %}

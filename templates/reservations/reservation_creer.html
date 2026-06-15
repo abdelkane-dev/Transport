@@ -72,15 +72,33 @@
 
 {% block extra_js %}
 <script>
-    // Calculer le prix total dynamiquement
-    const prixUnitaire = {{ trajet.prix }};
+    const prixUnitaire = parseFloat("{{ trajet.prix|floatformat:2 }}");
+    const placesDisponibles = parseInt("{{ places_disponibles }}");
+
     const inputPlaces = document.querySelector('input[name="nombre_places"]');
     const affichagePrix = document.getElementById('prix-total');
 
-    inputPlaces.addEventListener('input', function() {
-        const nb = parseInt(this.value) || 1;
-        const total = (prixUnitaire * nb).toLocaleString('fr-FR');
-        affichagePrix.textContent = total + ' FCFA';
-    });
+    if (inputPlaces) {
+        inputPlaces.setAttribute('min', '1');
+        inputPlaces.setAttribute('max', placesDisponibles);
+
+        inputPlaces.addEventListener('input', function () {
+            let nb = parseInt(this.value) || 1;
+
+            if (nb < 1) {
+                nb = 1;
+                this.value = 1;
+            }
+
+            if (nb > placesDisponibles) {
+                nb = placesDisponibles;
+                this.value = placesDisponibles;
+                alert("Vous ne pouvez pas réserver plus de " + placesDisponibles + " place(s).");
+            }
+
+            const total = (prixUnitaire * nb).toLocaleString('fr-FR');
+            affichagePrix.textContent = total + ' FCFA';
+        });
+    }
 </script>
 {% endblock %}

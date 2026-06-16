@@ -1,0 +1,105 @@
+{% extends 'base.html' %}
+{% block title %}Bus {{ bus.immatriculation }} – TransportBus{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="fw-bold">
+        <i class="bi bi-bus-front-fill me-2 text-primary"></i>{{ bus.immatriculation }}
+    </h2>
+    <a href="{% url 'bus:liste' %}" class="btn btn-outline-secondary btn-sm">
+        <i class="bi bi-arrow-left me-1"></i>Retour
+    </a>
+</div>
+
+<div class="row g-4">
+    <div class="col-md-5">
+        <div class="card border-0 shadow-sm h-100">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0"><i class="bi bi-info-circle me-2"></i>Informations</h5>
+            </div>
+            <div class="card-body">
+                <table class="table table-borderless mb-0">
+                    <tr>
+                        <td class="fw-semibold text-muted">Immatriculation</td>
+                        <td class="fw-bold">{{ bus.immatriculation }}</td>
+                    </tr>
+                    <tr>
+                        <td class="fw-semibold text-muted">Nombre de places</td>
+                        <td>{{ bus.nombre_places }} places</td>
+                    </tr>
+                    <tr>
+                        <td class="fw-semibold text-muted">Statut</td>
+                        <td>
+                            {% if bus.statut == 'ACTIF' %}<span class="badge bg-success fs-6">✅ Actif</span>
+                            {% elif bus.statut == 'MAINTENANCE' %}<span class="badge bg-warning text-dark fs-6">🔧 Maintenance</span>
+                            {% else %}<span class="badge bg-secondary fs-6">❌ Inactif</span>{% endif %}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="fw-semibold text-muted">Trajets associés</td>
+                        <td>{{ bus.get_nombre_trajets }}</td>
+                    </tr>
+                    <tr>
+                        <td class="fw-semibold text-muted">Ajouté le</td>
+                        <td>{{ bus.date_creation|date:"d/m/Y à H:i" }}</td>
+                    </tr>
+                    {% if bus.notes %}
+                    <tr>
+                        <td class="fw-semibold text-muted">Notes</td>
+                        <td class="fst-italic text-muted">{{ bus.notes }}</td>
+                    </tr>
+                    {% endif %}
+                </table>
+            </div>
+            {% if user.is_staff %}
+            <div class="card-footer bg-light d-flex gap-2">
+                <a href="{% url 'bus:modifier' bus.pk %}" class="btn btn-warning btn-sm flex-fill">
+                    <i class="bi bi-pencil me-1"></i>Modifier
+                </a>
+                <a href="{% url 'bus:supprimer' bus.pk %}" class="btn btn-danger btn-sm flex-fill">
+                    <i class="bi bi-trash me-1"></i>Supprimer
+                </a>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+    <div class="col-md-7">
+        <div class="card border-0 shadow-sm">
+            <div class="card-header bg-light">
+                <h5 class="mb-0"><i class="bi bi-map-fill me-2 text-primary"></i>Trajets de ce bus</h5>
+            </div>
+            <div class="card-body p-0">
+                {% if trajets %}
+                <div class="table-responsive">
+                    <table class="table table-hover mb-0">
+                        <thead class="table-light">
+                            <tr><th>Trajet</th><th>Date</th><th>Heure</th><th>Prix</th><th></th></tr>
+                        </thead>
+                        <tbody>
+                            {% for trajet in trajets %}
+                            <tr>
+                                <td>{{ trajet.ville_depart }} → {{ trajet.ville_arrivee }}</td>
+                                <td>{{ trajet.date_depart|date:"d/m/Y" }}</td>
+                                <td>{{ trajet.heure_depart|time:"H:i" }}</td>
+                                <td>{{ trajet.prix|floatformat:0 }} FCFA</td>
+                                <td>
+                                    <a href="{% url 'trajets:detail' trajet.pk %}" class="btn btn-sm btn-outline-primary">
+                                        <i class="bi bi-eye"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% else %}
+                <div class="text-center p-4 text-muted">
+                    <i class="bi bi-map fs-2"></i>
+                    <p class="mt-2">Aucun trajet associé à ce bus.</p>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

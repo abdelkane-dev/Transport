@@ -1,0 +1,87 @@
+{% extends 'base.html' %}
+{% block title %}Inscription – TransportBus{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8 col-lg-6">
+        <div class="card shadow-sm border-0">
+            <div class="card-header bg-primary text-white py-3">
+                <h4 class="mb-0 text-center">
+                    <i class="bi bi-person-plus-fill me-2"></i>Créer un compte
+                </h4>
+            </div>
+            <div class="card-body p-4">
+                <form method="post" novalidate>
+                    {% csrf_token %}
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold">{{ form.prenom.label }}</label>
+                            {{ form.prenom }}
+                            {% if form.prenom.errors %}
+                            <div class="text-danger small mt-1">{{ form.prenom.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold">{{ form.nom.label }}</label>
+                            {{ form.nom }}
+                            {% if form.nom.errors %}
+                            <div class="text-danger small mt-1">{{ form.nom.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label fw-semibold">{{ form.email.label }}</label>
+                            {{ form.email }}
+                            {% if form.email.errors %}
+                            <div class="text-danger small mt-1">{{ form.email.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label fw-semibold">{{ form.username.label }}</label>
+                            {{ form.username }}
+                            <div class="form-text">{{ form.username.help_text }}</div>
+                            {% if form.username.errors %}
+                            <div class="text-danger small mt-1">{{ form.username.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label fw-semibold">{{ form.telephone.label }}</label>
+                            {{ form.telephone }}
+                            {% if form.telephone.errors %}
+                            <div class="text-danger small mt-1">{{ form.telephone.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold">{{ form.mot_de_passe.label }}</label>
+                            {{ form.mot_de_passe }}
+                            <div class="form-text">{{ form.mot_de_passe.help_text }}</div>
+                            {% if form.mot_de_passe.errors %}
+                            <div class="text-danger small mt-1">{{ form.mot_de_passe.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold">{{ form.confirmer_mot_de_passe.label }}</label>
+                            {{ form.confirmer_mot_de_passe }}
+                            {% if form.confirmer_mot_de_passe.errors %}
+                            <div class="text-danger small mt-1">{{ form.confirmer_mot_de_passe.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <!-- Erreurs non liées aux champs -->
+                    {% if form.non_field_errors %}
+                    <div class="alert alert-danger mt-3">{{ form.non_field_errors }}</div>
+                    {% endif %}
+                    <div class="d-grid mt-4">
+                        <button type="submit" class="btn btn-primary btn-lg">
+                            <i class="bi bi-check-circle me-2"></i>Créer mon compte
+                        </button>
+                    </div>
+                </form>
+            </div>
+            <div class="card-footer text-center py-3 bg-light">
+                <span class="text-muted">Déjà inscrit(e) ?</span>
+                <a href="{% url 'accounts:connexion' %}" class="fw-semibold ms-1">Se connecter</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

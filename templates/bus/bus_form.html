@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% block title %}{{ titre }} – TransportBus{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2 class="fw-bold"><i class="bi bi-bus-front-fill me-2 text-primary"></i>{{ titre }}</h2>
+            <a href="{% url 'bus:liste' %}" class="btn btn-outline-secondary btn-sm">
+                <i class="bi bi-arrow-left me-1"></i>Retour
+            </a>
+        </div>
+        <div class="card border-0 shadow-sm">
+            <div class="card-body p-4">
+                <form method="post" novalidate>
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">{{ form.immatriculation.label }}</label>
+                        {{ form.immatriculation }}
+                        {% if form.immatriculation.errors %}
+                        <div class="text-danger small mt-1">{{ form.immatriculation.errors.0 }}</div>
+                        {% endif %}
+                        <div class="form-text">{{ form.immatriculation.help_text }}</div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">{{ form.nombre_places.label }}</label>
+                        {{ form.nombre_places }}
+                        {% if form.nombre_places.errors %}
+                        <div class="text-danger small mt-1">{{ form.nombre_places.errors.0 }}</div>
+                        {% endif %}
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">{{ form.statut.label }}</label>
+                        {{ form.statut }}
+                        <div class="form-text">{{ form.statut.help_text }}</div>
+                    </div>
+                    <div class="mb-4">
+                        <label class="form-label fw-semibold">{{ form.notes.label }}</label>
+                        {{ form.notes }}
+                    </div>
+                    {% if form.non_field_errors %}
+                    <div class="alert alert-danger">{{ form.non_field_errors }}</div>
+                    {% endif %}
+                    <div class="d-flex gap-2">
+                        <button type="submit" class="btn btn-primary px-4">
+                            <i class="bi bi-save me-2"></i>{{ action }}
+                        </button>
+                        <a href="{% url 'bus:liste' %}" class="btn btn-outline-secondary px-4">Annuler</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

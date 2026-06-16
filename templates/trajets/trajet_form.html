@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+{% block title %}{{ titre }} – TransportBus{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2 class="fw-bold"><i class="bi bi-map-fill me-2 text-primary"></i>{{ titre }}</h2>
+            <a href="{% url 'trajets:liste' %}" class="btn btn-outline-secondary btn-sm">
+                <i class="bi bi-arrow-left me-1"></i>Retour
+            </a>
+        </div>
+        <div class="card border-0 shadow-sm">
+            <div class="card-body p-4">
+                <form method="post" novalidate>
+                    {% csrf_token %}
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold">{{ form.ville_depart.label }}</label>
+                            {{ form.ville_depart }}
+                            {% if form.ville_depart.errors %}
+                            <div class="text-danger small mt-1">{{ form.ville_depart.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold">{{ form.ville_arrivee.label }}</label>
+                            {{ form.ville_arrivee }}
+                            {% if form.ville_arrivee.errors %}
+                            <div class="text-danger small mt-1">{{ form.ville_arrivee.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold">{{ form.date_depart.label }}</label>
+                            {{ form.date_depart }}
+                            {% if form.date_depart.errors %}
+                            <div class="text-danger small mt-1">{{ form.date_depart.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold">{{ form.heure_depart.label }}</label>
+                            {{ form.heure_depart }}
+                            {% if form.heure_depart.errors %}
+                            <div class="text-danger small mt-1">{{ form.heure_depart.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold">{{ form.prix.label }}</label>
+                            {{ form.prix }}
+                            {% if form.prix.errors %}
+                            <div class="text-danger small mt-1">{{ form.prix.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold">{{ form.bus.label }}</label>
+                            {{ form.bus }}
+                            <div class="form-text text-warning">
+                                <i class="bi bi-info-circle me-1"></i>Seuls les bus ACTIFS sont disponibles.
+                            </div>
+                            {% if form.bus.errors %}
+                            <div class="text-danger small mt-1">{{ form.bus.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    {% if form.non_field_errors %}
+                    <div class="alert alert-danger mt-3">{{ form.non_field_errors }}</div>
+                    {% endif %}
+                    <div class="d-flex gap-2 mt-4">
+                        <button type="submit" class="btn btn-primary px-4">
+                            <i class="bi bi-save me-2"></i>{{ action }}
+                        </button>
+                        <a href="{% url 'trajets:liste' %}" class="btn btn-outline-secondary px-4">Annuler</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

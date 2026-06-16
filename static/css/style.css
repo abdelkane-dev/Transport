@@ -1,0 +1,227 @@
+/* ============================================================
+   STYLES PERSONNALISÉS – Transport Réservation
+   Complète Bootstrap 5 avec des styles spécifiques au projet
+   ============================================================ */
+
+/* ----------------------------------------------------------
+   VARIABLES CSS GLOBALES
+   ---------------------------------------------------------- */
+:root {
+    --color-primary: #0d6efd;
+    --color-success: #198754;
+    --color-warning: #ffc107;
+    --color-danger: #dc3545;
+    --color-muted: #6c757d;
+    --border-radius-card: 12px;
+    --shadow-card: 0 2px 12px rgba(0, 0, 0, 0.08);
+    --transition: all 0.2s ease-in-out;
+}
+
+/* ----------------------------------------------------------
+   CORPS DE LA PAGE
+   ---------------------------------------------------------- */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f4f6f9;
+    color: #333;
+}
+
+/* ----------------------------------------------------------
+   NAVBAR PERSONNALISÉE
+   ---------------------------------------------------------- */
+.navbar-brand {
+    letter-spacing: 0.5px;
+}
+
+.navbar .nav-link {
+    font-weight: 500;
+    transition: var(--transition);
+    border-radius: 6px;
+    padding: 6px 12px !important;
+}
+
+.navbar .nav-link:hover {
+    background-color: rgba(255, 255, 255, 0.15);
+}
+
+/* ----------------------------------------------------------
+   CARTES (Cards)
+   ---------------------------------------------------------- */
+.card {
+    border-radius: var(--border-radius-card);
+    box-shadow: var(--shadow-card);
+    transition: var(--transition);
+}
+
+.card-header {
+    border-radius: var(--border-radius-card) var(--border-radius-card) 0 0 !important;
+    border-bottom: none;
+    padding: 1rem 1.25rem;
+}
+
+/* Effet de survol sur les cartes de trajets */
+.hover-lift:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
+}
+
+/* ----------------------------------------------------------
+   FORMULAIRES
+   ---------------------------------------------------------- */
+.form-control, .form-select {
+    border-radius: 8px;
+    border: 1.5px solid #dee2e6;
+    padding: 0.5rem 0.75rem;
+    transition: var(--transition);
+}
+
+.form-control:focus, .form-select:focus {
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.15);
+}
+
+.form-label {
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: #444;
+    margin-bottom: 0.3rem;
+}
+
+/* ----------------------------------------------------------
+   BOUTONS
+   ---------------------------------------------------------- */
+.btn {
+    border-radius: 8px;
+    font-weight: 500;
+    transition: var(--transition);
+    padding: 0.45rem 1rem;
+}
+
+.btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.btn:active {
+    transform: translateY(0);
+}
+
+/* ----------------------------------------------------------
+   BADGES
+   ---------------------------------------------------------- */
+.badge {
+    border-radius: 20px;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+}
+
+/* ----------------------------------------------------------
+   TABLEAUX
+   ---------------------------------------------------------- */
+.table {
+    font-size: 0.9rem;
+}
+
+.table thead th {
+    font-weight: 600;
+    font-size: 0.85rem;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    border-bottom: 2px solid rgba(0, 0, 0, 0.1);
+}
+
+.table-hover tbody tr:hover {
+    background-color: rgba(13, 110, 253, 0.04);
+}
+
+/* ----------------------------------------------------------
+   HERO SECTION (Page d'accueil)
+   ---------------------------------------------------------- */
+.hero-section {
+    padding: 4rem 0;
+}
+
+/* ----------------------------------------------------------
+   BARRE DE PROGRESSION (remplissage bus)
+   ---------------------------------------------------------- */
+.progress {
+    border-radius: 20px;
+    overflow: hidden;
+}
+
+.progress-bar {
+    border-radius: 20px;
+    transition: width 0.6s ease;
+}
+
+/* ----------------------------------------------------------
+   ALERTES
+   ---------------------------------------------------------- */
+.alert {
+    border-radius: 10px;
+    border: none;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+/* ----------------------------------------------------------
+   PIED DE PAGE
+   ---------------------------------------------------------- */
+footer a:hover {
+    color: white !important;
+    text-decoration: underline !important;
+}
+
+footer code {
+    color: #6ea8fe;
+}
+
+/* ----------------------------------------------------------
+   PAGE D'ERREUR 404 / 500
+   ---------------------------------------------------------- */
+.error-page {
+    padding: 5rem 0;
+    text-align: center;
+}
+
+.error-page .error-code {
+    font-size: 8rem;
+    font-weight: 900;
+    color: #e9ecef;
+    line-height: 1;
+}
+
+/* ----------------------------------------------------------
+   RESPONSIVE
+   ---------------------------------------------------------- */
+@media (max-width: 768px) {
+    .table-responsive {
+        font-size: 0.8rem;
+    }
+
+    h2 {
+        font-size: 1.5rem;
+    }
+
+    .btn-lg {
+        padding: 0.5rem 1rem;
+        font-size: 0.95rem;
+    }
+}
+
+/* ----------------------------------------------------------
+   UTILITAIRES SUPPLÉMENTAIRES
+   ---------------------------------------------------------- */
+.text-truncate-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.cursor-pointer {
+    cursor: pointer;
+}
+
+.border-dashed {
+    border-style: dashed !important;
+}

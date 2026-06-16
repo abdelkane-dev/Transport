@@ -1,0 +1,89 @@
+{% extends 'base.html' %}
+{% block title %}Réservation #{{ reservation.id }} – TransportBus{% endblock %}
+
+{% block content %}
+<a href="{% url 'reservations:dashboard' %}" class="btn btn-outline-secondary btn-sm mb-3">
+    <i class="bi bi-arrow-left me-1"></i>Mes réservations
+</a>
+
+<div class="row g-4 justify-content-center">
+    <div class="col-md-8">
+        <div class="card border-0 shadow-sm">
+            <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                <h5 class="mb-0"><i class="bi bi-ticket-fill me-2"></i>Réservation #{{ reservation.id }}</h5>
+                {% if reservation.statut == 'EN_ATTENTE' %}
+                <span class="badge bg-warning text-dark fs-6">⏳ En attente</span>
+                {% elif reservation.statut == 'CONFIRMEE' %}
+                <span class="badge bg-success fs-6">✅ Confirmée</span>
+                {% else %}
+                <span class="badge bg-secondary fs-6">❌ Annulée</span>
+                {% endif %}
+            </div>
+            <div class="card-body p-4">
+                <div class="row g-3 mb-4">
+                    <div class="col-sm-6">
+                        <div class="p-3 bg-light rounded">
+                            <div class="text-muted small">Trajet</div>
+                            <div class="fw-bold">{{ reservation.trajet.ville_depart }} → {{ reservation.trajet.ville_arrivee }}</div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="p-3 bg-light rounded">
+                            <div class="text-muted small">Date et heure de départ</div>
+                            <div class="fw-bold">{{ reservation.trajet.date_depart|date:"d/m/Y" }} à {{ reservation.trajet.heure_depart|time:"H:i" }}</div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="p-3 bg-light rounded">
+                            <div class="text-muted small">Nombre de places</div>
+                            <div class="fw-bold fs-4">{{ reservation.nombre_places }}</div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="p-3 bg-success bg-opacity-10 rounded">
+                            <div class="text-muted small">Prix total</div>
+                            <div class="fw-bold fs-4 text-success">{{ prix_total|floatformat:0 }} FCFA</div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="p-3 bg-light rounded">
+                            <div class="text-muted small">Bus</div>
+                            <div class="fw-bold">{{ reservation.trajet.bus.immatriculation }}</div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="p-3 bg-light rounded">
+                            <div class="text-muted small">Date de réservation</div>
+                            <div class="fw-bold">{{ reservation.date_reservation|date:"d/m/Y à H:i" }}</div>
+                        </div>
+                    </div>
+                </div>
+                {% if reservation.notes %}
+                <div class="alert alert-light border">
+                    <strong>Notes :</strong> {{ reservation.notes }}
+                </div>
+                {% endif %}
+                <!-- Actions -->
+                <div class="d-flex gap-3 pt-3 border-top">
+                    {% if peut_annuler %}
+                    <a href="{% url 'reservations:annuler' reservation.pk %}" class="btn btn-danger">
+                        <i class="bi bi-x-circle me-2"></i>Annuler la réservation
+                    </a>
+                    {% endif %}
+                    {% if user.is_staff and reservation.statut == 'EN_ATTENTE' %}
+                    <form method="post" action="{% url 'reservations:confirmer' reservation.pk %}" class="d-inline">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-success">
+                            <i class="bi bi-check-circle me-2"></i>Confirmer (Admin)
+                        </button>
+                    </form>
+                    {% endif %}
+                    <a href="{% url 'trajets:liste' %}" class="btn btn-outline-primary ms-auto">
+                        <i class="bi bi-search me-1"></i>Nouveau trajet
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

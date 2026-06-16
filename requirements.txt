@@ -1,0 +1,49 @@
+# ============================================================
+# Requirements – Projet Transport Réservation
+# Généré pour Python 3.11+ / Django 5.x
+# Installation : pip install -r requirements.txt
+# ============================================================
+
+# Framework principal
+Django==5.1.4
+
+# Django REST Framework – Création des API REST
+djangorestframework==3.15.2
+
+# Token Authentication pour DRF
+# (inclus dans djangorestframework, pas besoin d'installation séparée)
+
+# Gestion des variables d'environnement (.env)
+python-decouple==3.8
+
+# Pillow – Gestion des images (si besoin d'upload d'images plus tard)
+Pillow==10.4.0
+
+# Whitenoise – Servir les fichiers statiques en production
+whitenoise==6.7.0
+
+# Gunicorn – Serveur WSGI pour la production
+gunicorn==22.0.0
+
+# Django CORS Headers – Pour permettre les requêtes cross-origin (API)
+django-cors-headers==4.4.0
+
+# Django Filter – Filtrage avancé dans DRF
+django-filter==24.3
+
+# ============================================================
+# DÉVELOPPEMENT UNIQUEMENT (à ne pas installer en production)
+# ============================================================
+
+# Django Debug Toolbar – Outil de débogage (optionnel)
+# django-debug-toolbar==4.4.6
+
+# Coverage – Mesure de couverture des tests
+# coverage==7.6.1
+
+# ============================================================
+# Notes :
+# - SQLite est inclus avec Python (pas de dépendance supplémentaire)
+# - Pour PostgreSQL : pip install psycopg2-binary==2.9.9
+# - Pour MySQL : pip install mysqlclient==2.2.4
+# ============================================================

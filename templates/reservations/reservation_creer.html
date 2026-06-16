@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+{% block title %}Réserver – {{ trajet.ville_depart }} → {{ trajet.ville_arrivee }}{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <a href="{% url 'trajets:detail' trajet.pk %}" class="btn btn-outline-secondary btn-sm mb-3">
+            <i class="bi bi-arrow-left me-1"></i>Retour au trajet
+        </a>
+        <div class="card border-0 shadow-sm">
+            <div class="card-header bg-success text-white">
+                <h4 class="mb-0">
+                    <i class="bi bi-ticket-fill me-2"></i>
+                    Réservation : {{ trajet.ville_depart }} → {{ trajet.ville_arrivee }}
+                </h4>
+            </div>
+            <div class="card-body p-4">
+                <!-- Résumé du trajet -->
+                <div class="alert alert-info mb-4">
+                    <div class="row">
+                        <div class="col-sm-3"><strong>Date :</strong> {{ trajet.date_depart|date:"d/m/Y" }}</div>
+                        <div class="col-sm-3"><strong>Heure :</strong> {{ trajet.heure_depart|time:"H:i" }}</div>
+                        <div class="col-sm-3"><strong>Prix :</strong> {{ trajet.prix|floatformat:0 }} FCFA/place</div>
+                        <div class="col-sm-3"><strong>Disponibles :</strong> {{ places_disponibles }} place(s)</div>
+                    </div>
+                </div>
+                <!-- Formulaire de réservation -->
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">{{ form.nombre_places.label }}</label>
+                        {{ form.nombre_places }}
+                        <div class="form-text">{{ form.nombre_places.help_text }}</div>
+                        {% if form.nombre_places.errors %}
+                        <div class="text-danger small mt-1">{{ form.nombre_places.errors.0 }}</div>
+                        {% endif %}
+                    </div>
+                    <div class="mb-4">
+                        <label class="form-label fw-semibold">{{ form.notes.label }}</label>
+                        {{ form.notes }}
+                    </div>
+                    <!-- Résumé prix -->
+                    <div class="card bg-light mb-4">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between">
+                                <span>Prix unitaire</span>
+                                <span>{{ trajet.prix|floatformat:0 }} FCFA</span>
+                            </div>
+                            <div class="d-flex justify-content-between fw-bold text-success fs-5 mt-2 pt-2 border-top">
+                                <span>Total estimé</span>
+                                <span id="prix-total">{{ trajet.prix|floatformat:0 }} FCFA</span>
+                            </div>
+                        </div>
+                    </div>
+                    {% if form.non_field_errors %}
+                    <div class="alert alert-danger">{{ form.non_field_errors }}</div>
+                    {% endif %}
+                    <div class="d-flex gap-3">
+                        <button type="submit" class="btn btn-success btn-lg flex-fill">
+                            <i class="bi bi-check-circle me-2"></i>Confirmer la réservation
+                        </button>
+                        <a href="{% url 'trajets:detail' trajet.pk %}" class="btn btn-outline-secondary btn-lg">
+                            Annuler
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Calculer le prix total dynamiquement
+    const prixUnitaire = {{ trajet.prix }};
+    const inputPlaces = document.querySelector('input[name="nombre_places"]');
+    const affichagePrix = document.getElementById('prix-total');
+
+    inputPlaces.addEventListener('input', function() {
+        const nb = parseInt(this.value) || 1;
+        const total = (prixUnitaire * nb).toLocaleString('fr-FR');
+        affichagePrix.textContent = total + ' FCFA';
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,56 @@
+# ============================================================
+# .gitignore – Fichiers à ne pas committer
+# ============================================================
+
+# Environnement virtuel Python
+venv/
+env/
+.env
+.venv/
+ENV/
+
+# Variables d'environnement (JAMAIS committer le .env !)
+.env
+*.env
+
+# Base de données SQLite (données locales)
+*.sqlite3
+db.sqlite3
+
+# Fichiers compilés Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyc
+
+# Distribution / packaging
+dist/
+build/
+*.egg-info/
+
+# Fichiers statiques collectés (générés par collectstatic)
+staticfiles/
+
+# Médias uploadés par les utilisateurs
+media/
+
+# Logs
+*.log
+logs/
+
+# IDE et éditeurs
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+
+# Coverage
+.coverage
+htmlcov/
+
+# Migrations (selon la politique d'équipe)
+# Décommentez si vous ne voulez pas versionner les migrations :
+# */migrations/*.py
+# !*/migrations/__init__.py

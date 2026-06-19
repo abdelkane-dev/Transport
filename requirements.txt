@@ -1,49 +1,63 @@
 # ============================================================
-# Requirements – Projet Transport Réservation
+# Requirements – Projet Transport Réservation v2.0
 # Généré pour Python 3.11+ / Django 5.x
 # Installation : pip install -r requirements.txt
 # ============================================================
 
-# Framework principal
+# ── Framework principal ──────────────────────────────────────
 Django==5.1.4
 
-# Django REST Framework – Création des API REST
+# ── Django REST Framework – Création des API REST ────────────
 djangorestframework==3.15.2
 
-# Token Authentication pour DRF
-# (inclus dans djangorestframework, pas besoin d'installation séparée)
-
-# Gestion des variables d'environnement (.env)
+# ── Gestion des variables d'environnement (.env) ─────────────
 python-decouple==3.8
 
-# Pillow – Gestion des images (si besoin d'upload d'images plus tard)
+# ── Pillow – Gestion des images (requis pour ReportLab + QR code) ──
 Pillow==10.4.0
 
-# Whitenoise – Servir les fichiers statiques en production
+# ── Whitenoise – Servir les fichiers statiques en production ──
 whitenoise==6.7.0
 
-# Gunicorn – Serveur WSGI pour la production
+# ── Gunicorn – Serveur WSGI pour la production ───────────────
 gunicorn==22.0.0
 
-# Django CORS Headers – Pour permettre les requêtes cross-origin (API)
+# ── Django CORS Headers – Requêtes cross-origin (API) ────────
 django-cors-headers==4.4.0
 
-# Django Filter – Filtrage avancé dans DRF
+# ── Django Filter – Filtrage avancé dans DRF ─────────────────
 django-filter==24.3
 
 # ============================================================
-# DÉVELOPPEMENT UNIQUEMENT (à ne pas installer en production)
+# SPRINT 1 – Feature 1 : Génération de billets PDF
 # ============================================================
+# ReportLab – Génération de fichiers PDF professionnels
+reportlab==4.2.2
 
-# Django Debug Toolbar – Outil de débogage (optionnel)
-# django-debug-toolbar==4.4.6
+# QR Code – Génération de QR codes (intégré dans les PDF)
+qrcode[pil]==8.0
+
+# ============================================================
+# SPRINT 4 – Feature 11 : Cache Redis (optionnel)
+# ============================================================
+# Décommenter pour activer le cache Redis en production :
+# django-redis==5.4.0
+# redis==5.0.7
+
+# ============================================================
+# DÉVELOPPEMENT UNIQUEMENT
+# ============================================================
 
 # Coverage – Mesure de couverture des tests
 # coverage==7.6.1
+
+# Django Debug Toolbar – Outil de débogage (optionnel)
+# django-debug-toolbar==4.4.6
 
 # ============================================================
 # Notes :
 # - SQLite est inclus avec Python (pas de dépendance supplémentaire)
 # - Pour PostgreSQL : pip install psycopg2-binary==2.9.9
 # - Pour MySQL : pip install mysqlclient==2.2.4
+# - Pour Redis en production : pip install django-redis==5.4.0 redis==5.0.7
 # ============================================================

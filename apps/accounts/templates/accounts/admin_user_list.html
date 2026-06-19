@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+{% block title %}Gestion des utilisateurs - Admin{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1><i class="fas fa-users"></i> Gestion des utilisateurs</h1>
+        <a href="{% url 'accounts:admin_dashboard' %}" class="btn btn-secondary">
+            <i class="fas fa-chart-line"></i> Dashboard
+        </a>
+    </div>
+    
+    <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white">
+            <h5 class="mb-0">Liste des utilisateurs ({{ total_users }})</h5>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Nom complet</th>
+                            <th>Email</th>
+                            <th>Téléphone</th>
+                            <th>Réservations</th>
+                            <th>Confirmées</th>
+                            <th>Dépenses</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for user in users %}
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+                            <td>{{ user.get_nom_complet }}</td>
+                            <td>{{ user.email }}</td>
+                            <td>{{ user.telephone }}</td>
+                            <td>{{ user.total_reservations }}</td>
+                            <td>
+                                <span class="badge bg-success">{{ user.reservations_confirmees }}</span>
+                            </td>
+                            <td>{{ user.total_depense|default:0 }} CFA</td>
+                            <td>
+                                <a href="{% url 'accounts:admin_user_detail' user.id %}" 
+                                   class="btn btn-sm btn-outline-primary">
+                                    <i class="fas fa-eye"></i> Détail
+                                </a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

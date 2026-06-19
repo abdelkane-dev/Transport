@@ -1,0 +1,98 @@
+{% extends 'base.html' %}
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1><i class="fas fa-user-circle"></i> {{ user_detail.get_nom_complet }}</h1>
+        <a href="{% url 'accounts:admin_user_list' %}" class="btn btn-secondary">
+            <i class="fas fa-arrow-left"></i> Retour
+        </a>
+    </div>
+    
+    <!-- Cartes statistiques -->
+    <div class="row mb-4">
+        <div class="col-md-3">
+            <div class="card bg-primary text-white">
+                <div class="card-body">
+                    <h5 class="card-title">Total réservations</h5>
+                    <h2>{{ stats.total_reservations }}</h2>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-success text-white">
+                <div class="card-body">
+                    <h5 class="card-title">Confirmées</h5>
+                    <h2>{{ stats.reservations_confirmees }}</h2>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-danger text-white">
+                <div class="card-body">
+                    <h5 class="card-title">Annulées</h5>
+                    <h2>{{ stats.reservations_annulees }}</h2>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-info text-white">
+                <div class="card-body">
+                    <h5 class="card-title">Total dépensé</h5>
+                    <h2>{{ stats.total_depense }} CFA</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Liste des réservations -->
+    <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white">
+            <h5 class="mb-0">Historique des réservations</h5>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Référence</th>
+                            <th>Trajet</th>
+                            <th>Date départ</th>
+                            <th>Places</th>
+                            <th>Prix total</th>
+                            <th>Statut</th>
+                            <th>Date réservation</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for res in reservations %}
+                        <tr>
+                            <td><code>{{ res.reference }}</code></td>
+                            <td>{{ res.trajet.ville_depart }} → {{ res.trajet.ville_arrivee }}</td>
+                            <td>{{ res.trajet.date_depart|date:"d/m/Y" }} à {{ res.trajet.heure_depart|time:"H:i" }}</td>
+                            <td>{{ res.nombre_places }}</td>
+                            <td>{{ res.prix_total }} CFA</td>
+                            <td>
+                                {% if res.statut == 'CONFIRMEE' %}
+                                    <span class="badge bg-success">Confirmée</span>
+                                {% elif res.statut == 'EN_ATTENTE' %}
+                                    <span class="badge bg-warning">En attente</span>
+                                {% else %}
+                                    <span class="badge bg-danger">Annulée</span>
+                                {% endif %}
+                            </td>
+                            <td>{{ res.date_reservation|date:"d/m/Y H:i" }}</td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="7" class="text-center">Aucune réservation</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

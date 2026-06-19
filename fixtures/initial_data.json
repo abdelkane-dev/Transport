@@ -5,6 +5,28 @@
     "fields": {
       "password": "pbkdf2_sha256$720000$test$hashedpassword",
       "last_login": null,
+      "is_superuser": true,
+      "username": "admin",
+      "first_name": "Admin",
+      "last_name": "System",
+      "email": "admin@transport.sn",
+      "is_staff": true,
+      "is_active": true,
+      "date_joined": "2024-01-01T00:00:00Z",
+      "prenom": "Admin",
+      "nom": "System",
+      "telephone": "+221770000000",
+      "date_inscription": "2024-01-01T00:00:00Z",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "accounts.user",
+    "pk": 2,
+    "fields": {
+      "password": "pbkdf2_sha256$720000$test$hashedpassword",
+      "last_login": null,
       "is_superuser": false,
       "username": "alice_dupont",
       "first_name": "Alice",
@@ -23,7 +45,7 @@
   },
   {
     "model": "accounts.user",
-    "pk": 2,
+    "pk": 3,
     "fields": {
       "password": "pbkdf2_sha256$720000$test$hashedpassword",
       "last_login": null,
@@ -52,7 +74,7 @@
       "statut": "ACTIF",
       "date_creation": "2024-01-01T06:00:00Z",
       "date_modification": "2024-01-01T06:00:00Z",
-      "notes": "Bus principal longue distance, climatisé"
+      "notes": "Bus principal longue distance"
     }
   },
   {
@@ -64,19 +86,7 @@
       "statut": "ACTIF",
       "date_creation": "2024-01-05T07:00:00Z",
       "date_modification": "2024-01-05T07:00:00Z",
-      "notes": "Bus régional courte distance"
-    }
-  },
-  {
-    "model": "bus.bus",
-    "pk": 3,
-    "fields": {
-      "immatriculation": "DK-9012-EF",
-      "nombre_places": 45,
-      "statut": "MAINTENANCE",
-      "date_creation": "2024-01-10T08:00:00Z",
-      "date_modification": "2024-02-01T08:00:00Z",
-      "notes": "En révision générale – disponible fin février"
+      "notes": "Bus régional"
     }
   },
   {
@@ -85,7 +95,7 @@
     "fields": {
       "ville_depart": "Dakar",
       "ville_arrivee": "Thiès",
-      "date_depart": "2025-07-15",
+      "date_depart": "2026-06-20",
       "heure_depart": "07:00:00",
       "prix": "3500.00",
       "bus": 1,
@@ -99,7 +109,7 @@
     "fields": {
       "ville_depart": "Dakar",
       "ville_arrivee": "Saint-Louis",
-      "date_depart": "2025-07-16",
+      "date_depart": "2026-06-20",
       "heure_depart": "06:00:00",
       "prix": "8000.00",
       "bus": 1,
@@ -113,7 +123,7 @@
     "fields": {
       "ville_depart": "Dakar",
       "ville_arrivee": "Kaolack",
-      "date_depart": "2025-07-17",
+      "date_depart": "2026-06-20",
       "heure_depart": "08:30:00",
       "prix": "6000.00",
       "bus": 2,
@@ -125,23 +135,9 @@
     "model": "trajets.trajet",
     "pk": 4,
     "fields": {
-      "ville_depart": "Thiès",
-      "ville_arrivee": "Dakar",
-      "date_depart": "2025-07-18",
-      "heure_depart": "14:00:00",
-      "prix": "3500.00",
-      "bus": 2,
-      "date_creation": "2024-06-04T10:00:00Z",
-      "date_modification": "2024-06-04T10:00:00Z"
-    }
-  },
-  {
-    "model": "trajets.trajet",
-    "pk": 5,
-    "fields": {
       "ville_depart": "Dakar",
       "ville_arrivee": "Ziguinchor",
-      "date_depart": "2025-07-20",
+      "date_depart": "2026-06-25",
       "heure_depart": "05:00:00",
       "prix": "15000.00",
       "bus": 1,

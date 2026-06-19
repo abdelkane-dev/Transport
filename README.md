@@ -1,11 +1,11 @@
-# 🚌 Transport Réservation – Backend Django Complet
+# Transport Réservation – Backend Django Complet
 
 > Projet académique – Application de réservation de billets de bus  
-> **Lead Développeur Backend :** Personne 1 | Stack : Django 5.x + DRF + SQLite
+> **Lead Développeur Backend :** Abdoul_Karim_Traoré | Stack : Django 5.x + DRF + SQLite
 
 ---
 
-## 📋 1. Description du projet
+##  1. Description du projet
 
 **Transport Réservation** est une application web Django permettant à une compagnie de transport de gérer sa flotte de bus, ses trajets et les réservations de ses clients.
 
@@ -25,19 +25,19 @@
 
 ---
 
-## 👥 2. Équipe et répartition des rôles
+## 2. Équipe et répartition des rôles
 
 | Rôle | Responsabilités |
 |------|----------------|
-| **Personne 1 – Lead Backend** | Architecture Django, modèles, API REST, admin, logique métier, déploiement |
-| **Personne 2 – Frontend** | Templates HTML/CSS, intégration Bootstrap, UX/UI, formulaires |
-| **Personne 3 – Tests & DevOps** | Tests unitaires, fixtures, CI/CD, documentation technique |
+| **Abdou_Karim8Traoré – Lead Backend** | Architecture Django, modèles, API REST, admin, logique métier, déploiement |
+| **Oumou_Sarr_Keita – Frontend** | Templates HTML/CSS, intégration Bootstrap, UX/UI, formulaires |
+| **Adama_Bengaly – Tests & DevOps** | Tests unitaires, fixtures, CI/CD, documentation technique |
 
-> Ce dépôt contient **le travail de Personne 1 (Lead Backend)** dans son intégralité.
+> Ce dépôt contient **le travail de Abdoul_Karim_Traoré (Lead Backend)** dans son intégralité.
 
 ---
 
-## 🏗️ 3. Architecture technique
+## 3. Architecture technique
 
 ### Stack technique
 | Composant | Technologie |
@@ -106,7 +106,7 @@ transport_project/
 
 ---
 
-## 🚀 4. Installation et lancement
+## 4. Installation et lancement
 
 ### Prérequis
 - Python 3.11 ou supérieur
@@ -179,7 +179,7 @@ python manage.py createsuperuser
 ```bash
 python manage.py runserver
 ```
-> 🌐 L'application est accessible sur : **http://127.0.0.1:8000/**
+>  L'application est accessible sur : **http://127.0.0.1:8000/**
 
 ### Étape 10 – Accéder aux différentes interfaces
 | URL | Description |
@@ -196,7 +196,7 @@ python manage.py runserver
 
 ---
 
-## 📊 5. Structure de la base de données
+## 5. Structure de la base de données
 
 ### Modèle `User` (app: accounts)
 | Champ | Type | Description |
@@ -247,7 +247,7 @@ python manage.py runserver
 
 ---
 
-## 🔧 6. Fonctionnalités implémentées
+## 6. Fonctionnalités implémentées
 
 ### App `accounts` – Gestion des comptes
 - ✅ Modèle User personnalisé (AbstractUser) avec champs métier
@@ -292,7 +292,7 @@ python manage.py runserver
 
 ---
 
-## 🧪 7. Tester l'application
+## 7. Tester l'application
 
 ### Scénario 1 : Inscription et connexion
 ```
@@ -374,7 +374,7 @@ python manage.py test --verbosity=2
 
 ---
 
-## 🐛 8. Bugs connus / Limitations
+## 8. Bugs connus / Limitations
 
 | # | Description | Statut |
 |---|-------------|--------|
@@ -387,7 +387,7 @@ python manage.py test --verbosity=2
 
 ---
 
-## 📝 9. Commandes utiles
+## 9. Commandes utiles
 
 ### Gestion de la base de données
 ```bash
@@ -461,7 +461,7 @@ python manage.py check --deploy
 
 ---
 
-## 📅 10. Planning et livrables
+## 10. Planning et livrables
 
 ### Ce qui a été livré (Version 1.0)
 | Livrable | Statut | Date |
@@ -488,7 +488,7 @@ python manage.py check --deploy
 
 ---
 
-## 🔐 Décisions techniques expliquées
+## Décisions techniques expliquées
 
 ### Pourquoi `AbstractUser` et pas `AbstractBaseUser` ?
 `AbstractUser` garde tous les champs Django par défaut (username, email, groups, permissions) et nous permet d'en ajouter sans réécrire l'authentification. C'est la solution recommandée pour les projets où on veut personnaliser sans repartir de zéro.
@@ -501,7 +501,3 @@ La validation métier dans `clean()` s'assure que les règles sont vérifiées *
 
 ### Pourquoi CBV (Class-Based Views) ?
 Les CBV permettent de réutiliser le comportement commun via `LoginRequiredMixin`, `UserPassesTestMixin`, etc. Elles sont plus maintenables pour des projets de taille moyenne et suivent les conventions Django.
-
----
-
-*README généré par Lead Backend – Projet Transport Réservation – 2024*

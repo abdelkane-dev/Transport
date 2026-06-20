@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            color: #10212b;
+            background: #f4f7f5;
+        }
+
+        .ticket {
+            border-radius: 18px;
+            overflow: hidden;
+            border: 2px solid #1f7548;
+        }
+
+        .header {
+            background: #12352f;
+            color: white;
+            padding: 22px;
+            text-align: center;
+        }
+
+        .brand {
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .subtitle {
+            font-size: 13px;
+            color: #d7efe1;
+        }
+
+        .content {
+            padding: 25px;
+        }
+
+        .status {
+            text-align: center;
+            background: #eaf7ef;
+            color: #1f7548;
+            font-weight: bold;
+            padding: 10px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+        }
+
+        .route {
+            text-align: center;
+            font-size: 30px;
+            font-weight: bold;
+            color: #12352f;
+            margin-bottom: 25px;
+        }
+
+        .info-table {
+            width: 100%;
+            margin-top: 15px;
+        }
+
+        .info-table td {
+            padding: 12px;
+            border-bottom: 1px solid #ddd;
+            font-size: 14px;
+        }
+
+        .label {
+            color: #60707a;
+            font-weight: bold;
+        }
+
+        .value {
+            text-align: right;
+            font-weight: bold;
+        }
+
+        .total {
+            color: #1f7548;
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .bottom {
+            margin-top: 25px;
+            width: 100%;
+        }
+
+        .qr-box {
+            width: 35%;
+            text-align: center;
+            vertical-align: top;
+        }
+
+        .qr-box img {
+            width: 130px;
+            height: 130px;
+        }
+
+        .note-box {
+            width: 65%;
+            background: #f6faf7;
+            padding: 15px;
+            border-radius: 12px;
+            font-size: 12px;
+            color: #60707a;
+            vertical-align: top;
+        }
+
+        .footer {
+            background: #12352f;
+            color: white;
+            text-align: center;
+            padding: 12px;
+            font-size: 11px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="ticket">
+
+    <div class="header">
+        <div class="brand">TransportBus</div>
+        <div class="subtitle">Billet officiel de réservation</div>
+    </div>
+
+    <div class="content">
+
+        <div class="status">
+            Réservation #{{ reservation.id }} — {{ reservation.get_statut_display }}
+        </div>
+
+        <div class="route">
+            {{ reservation.trajet.ville_depart }} → {{ reservation.trajet.ville_arrivee }}
+        </div>
+
+        <table class="info-table">
+            <tr>
+                <td class="label">Date de départ</td>
+                <td class="value">{{ reservation.trajet.date_depart|date:"d/m/Y" }}</td>
+            </tr>
+            <tr>
+                <td class="label">Heure</td>
+                <td class="value">{{ reservation.trajet.heure_depart|time:"H:i" }}</td>
+            </tr>
+            <tr>
+                <td class="label">Bus</td>
+                <td class="value">{{ reservation.trajet.bus.immatriculation }}</td>
+            </tr>
+            <tr>
+                <td class="label">Nombre de places</td>
+                <td class="value">{{ reservation.nombre_places }}</td>
+            </tr>
+            <tr>
+                <td class="label">Date de réservation</td>
+                <td class="value">{{ reservation.date_reservation|date:"d/m/Y à H:i" }}</td>
+            </tr>
+            <tr>
+                <td class="label">Total</td>
+                <td class="value total">{{ prix_total|floatformat:0 }} FCFA</td>
+            </tr>
+        </table>
+
+        <table class="bottom">
+            <tr>
+                <td class="note-box">
+                    Présentez ce billet lors de l’embarquement.  
+                    Le QR code permet de retrouver rapidement les détails de la réservation.
+                </td>
+
+                <td class="qr-box">
+                    <img src="data:image/png;base64,{{ qr_code }}">
+                    <br>
+                    <small>Scan billet</small>
+                </td>
+            </tr>
+        </table>
+
+    </div>
+
+    <div class="footer">
+        © 2026 TransportBus — Voyagez simplement, rapidement et en sécurité.
+    </div>
+
+</div>
+
+</body>
+</html>

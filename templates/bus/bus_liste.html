@@ -22,26 +22,56 @@
     </div>
 
     <div class="bus-filter-card">
-        <form method="get" class="d-flex gap-2 flex-wrap align-items-end">
-            <div>
-                <label class="form-label">Filtrer par statut</label>
+
+        <form method="get" class="row g-3 align-items-end">
+
+            <div class="col-md-5">
+                <label class="form-label">Rechercher un bus</label>
+                <input
+                    type="text"
+                    name="q"
+                    class="form-control"
+                    value="{{ q }}"
+                    placeholder="Ex : TB-001-ML">
+            </div>
+
+            <div class="col-md-3">
+                <label class="form-label">Statut</label>
                 <select name="statut" class="form-select">
                     <option value="">Tous les bus</option>
-                    <option value="ACTIF" {% if statut_filtre == 'ACTIF' %}selected{% endif %}>Actif</option>
-                    <option value="INACTIF" {% if statut_filtre == 'INACTIF' %}selected{% endif %}>Inactif</option>
-                    <option value="MAINTENANCE" {% if statut_filtre == 'MAINTENANCE' %}selected{% endif %}>Maintenance</option>
+
+                    <option value="ACTIF"
+                        {% if statut_filtre == 'ACTIF' %}selected{% endif %}>
+                        Actif
+                    </option>
+
+                    <option value="INACTIF"
+                        {% if statut_filtre == 'INACTIF' %}selected{% endif %}>
+                        Inactif
+                    </option>
+
+                    <option value="MAINTENANCE"
+                        {% if statut_filtre == 'MAINTENANCE' %}selected{% endif %}>
+                        Maintenance
+                    </option>
                 </select>
             </div>
 
-            <button type="submit" class="btn btn-success">
-                <i class="bi bi-funnel me-1"></i>
-                Filtrer
-            </button>
+            <div class="col-md-2">
+                <button type="submit" class="btn btn-success w-100">
+                    <i class="bi bi-search me-1"></i>
+                    Chercher
+                </button>
+            </div>
 
-            <a href="{% url 'bus:liste' %}" class="btn btn-outline-secondary">
-                Réinitialiser
-            </a>
+            <div class="col-md-2">
+                <a href="{% url 'bus:liste' %}" class="btn btn-outline-secondary w-100">
+                    Réinitialiser
+                </a>
+            </div>
+
         </form>
+
     </div>
 
     <div class="row g-3 my-4">
@@ -132,9 +162,11 @@
         {% if is_paginated %}
             <nav class="mt-4">
                 <ul class="pagination justify-content-center">
+
                     {% if page_obj.has_previous %}
                         <li class="page-item">
-                            <a class="page-link" href="?page={{ page_obj.previous_page_number }}{% if statut_filtre %}&statut={{ statut_filtre }}{% endif %}">
+                            <a class="page-link"
+                               href="?page={{ page_obj.previous_page_number }}{% if statut_filtre %}&statut={{ statut_filtre }}{% endif %}{% if q %}&q={{ q }}{% endif %}">
                                 Précédent
                             </a>
                         </li>
@@ -148,11 +180,13 @@
 
                     {% if page_obj.has_next %}
                         <li class="page-item">
-                            <a class="page-link" href="?page={{ page_obj.next_page_number }}{% if statut_filtre %}&statut={{ statut_filtre }}{% endif %}">
+                            <a class="page-link"
+                               href="?page={{ page_obj.next_page_number }}{% if statut_filtre %}&statut={{ statut_filtre }}{% endif %}{% if q %}&q={{ q }}{% endif %}">
                                 Suivant
                             </a>
                         </li>
                     {% endif %}
+
                 </ul>
             </nav>
         {% endif %}
@@ -161,7 +195,8 @@
         <div class="empty-state">
             <i class="bi bi-bus-front"></i>
             <h3>Aucun bus trouvé</h3>
-            <p>Aucun véhicule ne correspond au filtre choisi.</p>
+            <p>Aucun véhicule ne correspond à votre recherche ou au filtre choisi.</p>
+
             <a href="{% url 'bus:liste' %}" class="btn btn-success">
                 Voir tous les bus
             </a>

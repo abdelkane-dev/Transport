@@ -104,6 +104,11 @@
 
         <div class="ticket-detail-actions">
 
+            <a href="{% url 'reservations:ticket_pdf' reservation.pk %}" class="btn btn-outline-success">
+                <i class="bi bi-file-earmark-pdf me-2"></i>
+                Télécharger le billet PDF
+            </a>
+
             {% if peut_annuler %}
     <a href="{% url 'reservations:annuler' reservation.pk %}"
        class="btn btn-danger"

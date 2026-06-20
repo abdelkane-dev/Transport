@@ -44,30 +44,34 @@ class AdminRequiredMixin(UserPassesTestMixin):
 # ============================================================
 
 class BusListeView(ListView):
-    """
-    Vue listant tous les bus de la flotte.
-    Accessible à tous (visiteurs et connectés).
-    GET /bus/
-    """
     model = Bus
     template_name = 'bus/bus_liste.html'
     context_object_name = 'bus_list'
-    paginate_by = 10  # 10 bus par page
+    paginate_by = 10
 
     def get_queryset(self):
-        """Permet de filtrer par statut via le paramètre GET ?statut=ACTIF."""
         queryset = Bus.objects.all()
+
         statut = self.request.GET.get('statut')
+        q = self.request.GET.get('q')
+
         if statut in ['ACTIF', 'INACTIF', 'MAINTENANCE']:
             queryset = queryset.filter(statut=statut)
-        return queryset
+
+        if q:
+            queryset = queryset.filter(immatriculation__icontains=q)
+
+        return queryset.order_by('immatriculation')
 
     def get_context_data(self, **kwargs):
-        """Ajoute le filtre sélectionné au contexte du template."""
         context = super().get_context_data(**kwargs)
+
         context['statut_filtre'] = self.request.GET.get('statut', '')
+        context['q'] = self.request.GET.get('q', '')
+
         context['total_bus'] = Bus.objects.count()
         context['bus_actifs'] = Bus.objects.filter(statut='ACTIF').count()
+
         return context
 
 

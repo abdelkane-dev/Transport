@@ -11,6 +11,13 @@ from django.views import View
 from django.views.generic import ListView, DetailView, CreateView
 from django.urls import reverse_lazy, reverse
 from django.http import HttpResponseForbidden
+import base64
+from io import BytesIO
+import qrcode
+from django.urls import reverse
+from django.template.loader import get_template
+from django.http import HttpResponse
+from xhtml2pdf import pisa
 
 # Importations DRF
 from rest_framework import viewsets, permissions, status
@@ -267,6 +274,40 @@ def confirmer_reservation_view(request, pk):
 
     return redirect('reservations:admin')
 
+@login_required(login_url='/accounts/connexion/')
+def telecharger_ticket_pdf(request, pk):
+    reservation = get_object_or_404(Reservation, pk=pk)
+
+    if reservation.client != request.user and not request.user.is_staff:
+        messages.error(request, "Accès non autorisé.")
+        return redirect('reservations:dashboard')
+
+    ticket_url = request.build_absolute_uri(
+        reverse('reservations:detail', args=[reservation.pk])
+    )
+
+    qr = qrcode.make(ticket_url)
+    buffer = BytesIO()
+    qr.save(buffer, format="PNG")
+    qr_base64 = base64.b64encode(buffer.getvalue()).decode()
+
+    template = get_template('reservations/ticket_pdf.html')
+    html = template.render({
+        'reservation': reservation,
+        'prix_total': reservation.get_prix_total(),
+        'qr_code': qr_base64,
+        'ticket_url': ticket_url,
+    })
+
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = f'attachment; filename="ticket_reservation_{reservation.id}.pdf"'
+
+    pisa_status = pisa.CreatePDF(html, dest=response)
+
+    if pisa_status.err:
+        return HttpResponse("Erreur lors de la génération du PDF", status=500)
+
+    return response
 
 # ============================================================
 # VUES API REST (DRF)

@@ -2999,3 +2999,116 @@ footer a:hover {
         padding: 30px 20px;
     }
 }
+
+.theme-toggle-btn {
+    border: 1px solid rgba(255,255,255,0.35);
+    background: rgba(255,255,255,0.12);
+    color: white;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.theme-toggle-btn:hover {
+    background: rgba(255,255,255,0.22);
+}
+
+html[data-theme="dark"] body {
+    background: #0f1715 !important;
+    color: #e8f4ee;
+}
+
+html[data-theme="dark"] main {
+    background: #0f1715;
+}
+
+html[data-theme="dark"] .card,
+html[data-theme="dark"] .bus-card,
+html[data-theme="dark"] .profile-card,
+html[data-theme="dark"] .travel-ticket,
+html[data-theme="dark"] .ticket-detail-card,
+html[data-theme="dark"] .reservation-card,
+html[data-theme="dark"] .admin-table-card,
+html[data-theme="dark"] .admin-res-card,
+html[data-theme="dark"] .bus-profile-card,
+html[data-theme="dark"] .bus-trajets-card,
+html[data-theme="dark"] .bus-form-card,
+html[data-theme="dark"] .delete-warning-card,
+html[data-theme="dark"] .delete-card,
+html[data-theme="dark"] .cancel-card,
+html[data-theme="dark"] .trajets-search-card,
+html[data-theme="dark"] .bus-filter-card {
+    background: #17211e !important;
+    color: #e8f4ee !important;
+    border-color: rgba(126,224,164,0.18) !important;
+}
+
+html[data-theme="dark"] .text-muted,
+html[data-theme="dark"] small,
+html[data-theme="dark"] .form-text {
+    color: #aebfba !important;
+}
+
+html[data-theme="dark"] .form-control,
+html[data-theme="dark"] .form-select,
+html[data-theme="dark"] input,
+html[data-theme="dark"] textarea,
+html[data-theme="dark"] select {
+    background: #101916 !important;
+    color: #e8f4ee !important;
+    border-color: rgba(126,224,164,0.25) !important;
+}
+
+html[data-theme="dark"] .form-control::placeholder {
+    color: #7f928c !important;
+}
+
+html[data-theme="dark"] .dropdown-menu {
+    background: #17211e;
+    border-color: rgba(126,224,164,0.18);
+}
+
+html[data-theme="dark"] .dropdown-item,
+html[data-theme="dark"] .dropdown-item-text {
+    color: #e8f4ee !important;
+}
+
+html[data-theme="dark"] .dropdown-item:hover {
+    background: #22332e;
+}
+
+html[data-theme="dark"] .table {
+    color: #e8f4ee;
+}
+
+html[data-theme="dark"] .table thead,
+html[data-theme="dark"] .admin-modern-table thead,
+html[data-theme="dark"] .reservation-table thead {
+    background: #101916 !important;
+}
+
+html[data-theme="dark"] .table tbody tr:hover {
+    background: #22332e !important;
+}
+
+html[data-theme="dark"] .bg-light,
+html[data-theme="dark"] .empty-state,
+html[data-theme="dark"] .bus-info-grid,
+html[data-theme="dark"] .ticket-details-grid,
+html[data-theme="dark"] .profile-mini-info div,
+html[data-theme="dark"] .trajet-info-box,
+html[data-theme="dark"] .admin-client,
+html[data-theme="dark"] .admin-res-info,
+html[data-theme="dark"] .bus-profile-stats div,
+html[data-theme="dark"] .bus-mini-info div,
+html[data-theme="dark"] .bus-trip-item {
+    background: #101916 !important;
+    color: #e8f4ee !important;
+}
+
+html[data-theme="dark"] .footer-modern {
+    background: #08100e !important;
+}

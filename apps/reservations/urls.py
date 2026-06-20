@@ -21,4 +21,6 @@ urlpatterns = [
     path('admin/', views.admin_reservations_view, name='admin'),
     # Admin : confirmer une réservation
     path('<int:pk>/confirmer/', views.confirmer_reservation_view, name='confirmer'),
+    # Telecharger reservation
+    path('<int:pk>/ticket-pdf/', views.telecharger_ticket_pdf, name='ticket_pdf'),
 ]
